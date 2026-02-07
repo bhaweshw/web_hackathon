@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
 
-
+        const Navigate = useNavigate();
     const [username, setUsername] = useState("");
       const [password, setPassword] = useState("");
 
@@ -18,14 +18,16 @@ const SignIn = () => {
 
         console.log(formData);
 
-        axios.post('http://localhost:5000/api/login', formData)
-        .then((res) => {
-            navigate("/home");
-        })
-        .catch((error) => {
-            console.log(error);
-            alert("Login failed. Please check your credentials and try again.");
-        });
+        Navigate("/home");
+
+        // axios.post('http://localhost:5000/api/login', formData)
+        // .then((res) => {
+        //     navigate("/home");
+        // })
+        // .catch((error) => {
+        //     console.log(error);
+        //     alert("Login failed. Please check your credentials and try again.");
+        // });
       }
 
 
