@@ -1,12 +1,22 @@
 
 import axios from "axios";
 import React, { useState, useRef } from "react";
+import { RiBookmarkLine } from "@remixicon/react";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
 
-   const [Startdate, setStartdate] = useState("");
+
+  const Navigate = useNavigate();
+    const [distance, setDistance] = useState(40);
+    const [velocity, setVelocity] = useState(28);
+    const [size, setSize] = useState(12);
+    const [hazardFactor, setHazardFactor] = useState(20);
+  const [Startdate, setStartdate] = useState("");
   const [Enddate, setEnddate] = useState("");
   const [asteroids, setAsteroids] = useState([]);
+  const [bookmark, setBookmark] = useState([]);
+  const [calculation, setCalculation] = useState([]);
 
   const scrollRef = useRef(null);
 
@@ -44,7 +54,7 @@ const HomePage = () => {
           },
         }
       );
-
+      console.log()
       const neoObject = res.data.near_earth_objects;
       const flattenedAsteroids = Object.values(neoObject).flat();
       setAsteroids(flattenedAsteroids);
@@ -53,12 +63,45 @@ const HomePage = () => {
       alert("Invalid date range (max 7 days)");
     }
   };
+
+const handleBookmark = (asteroid) => {
+  setBookmark((prev) => {
+    const exists = prev.find((a) => a.id === asteroid.id);
+    if (exists) return prev;
+
+    return [...prev, asteroid];
+  });
+
+  alert("Asteroid bookmarked!");
+  console.log(bookmark);
+};
+
+const handleCalculation = () => {
+  {bookmark.map((asteroid) => {
+    calculation.push((
+      distance*asteroid.close_approach_data?.[0].miss_distance.kilometers +
+      velocity*asteroid.close_approach_data?.[0].relative_velocity.kilometers_per_hour +
+      size*asteroid.estimated_diameter.meters.estimated_diameter_max +
+      hazardFactor*(asteroid.is_potentially_hazardous_asteroid ? 1*50000000 : 0))/2000000000/(distance+velocity+size+hazardFactor)
+    );})
+  }
+  console.log(calculation);
+  console.log(bookmark);
+};
+
+
+
   return (
-    <div className="relative w-full h-screen">
-      <img src="https://cdn.dribbble.com/userupload/3719111/file/original-b212e235c1c8199378f2dfb575011f56.jpg?resize=1504x1504&vertical=center" alt="logo" className='absolute top-0 left-0 right-0 bottom-0 w-full h-screen object-cover z-0' />
+    <div className=" w-full h-full bg-blue-600">
+
+      {/* Fetching data */}
+    <div className="w-full h-screen">
+             <img src="https://cdn.dribbble.com/userupload/3719111/file/original-b212e235c1c8199378f2dfb575011f56.jpg?resize=1504x1504&vertical=center" alt="logo" className='absolute top-0 left-0 right-0 bottom-0 w-full h-screen object-cover z-0' />
       
-      <div className='absolute inset-0 bg-black/50 bg-opacity-10 z-10'></div>
-<div className="p-10 z-20 relative min-h-screen">
+      <div className='absolute inset-0 bg-black/50 bg-opacity-10 z-10 h-screen w-full'></div>
+<div className="p-10 z-20 relative min-h-full">
+
+
       <div className="max-w-md mx-auto space-y-4 text-white">
         <label>Start Date</label>
         <input
@@ -84,8 +127,8 @@ const HomePage = () => {
         </button>
       </div>
 
-      <div className="h-screen w-full overflow-hidden mt-10">
-        <div id="scroll-container"
+      <div className="h-full w-full overflow-hidden mt-10">
+        <div id="scroll-container "
           ref={scrollRef}
           onMouseDown={handleMouseDown}
           className="flex flex-nowrap overflow-x-auto text-white gap-12 p-10 cursor-grab active:cursor-grabbing select-none"
@@ -96,13 +139,17 @@ const HomePage = () => {
             return (
               <div
                 key={asteroid.id}
-                className="border bg-white/10 backdrop-blur-sm shrink-0 p-4 rounded w-64 h-64 flex flex-col justify-between"
+                className="relative border bg-white/10 backdrop-blur-sm shrink-0 p-4 rounded w-64 h-64 flex flex-col justify-between"
               >
+                  <button className="h-10 w-10 absolute z-10 top-5 right-5" onClick={() => handleBookmark(asteroid)} >
+  <RiBookmarkLine />
+</button>
+
                 <h1 className="font-bold">{asteroid.name}</h1>
 
                 <h1>
                   Hazardous:{" "}
-                  {asteroid.is_potentially_hazardous_asteroid ? "Yes " : "No "}
+                  {asteroid.is_potentially_hazardous_asteroid ? "1" : "0"}
                 </h1>
 
                 {approach && (
@@ -139,12 +186,55 @@ const HomePage = () => {
         </div>
       </div>
     </div>
+    </div>
+    {/* Risk Score */}
+    <div>
+        <div className="relative min-h-screen w-full overflow-hidden">
+      
+
+      <img src="https://cdn.dribbble.com/userupload/41788994/file/original-cab35b2befce7e561b25f9801afb06af.gif" alt="logo" className='absolute top-0 left-0 right-0 bottom-0 w-full h-screen object-cover z-0' />
+
+      <div className="absolute inset-0 bg-black/50 z-10 pointer-events-none"></div>
 
 
+      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen text-white">
+        <h1 className="text-4xl font-bold">Asteroid Tracker</h1>
+        <div>
+            <input type="text"
+             placeholder="Weight of Distance"
+                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-blue-200 text-black" 
+                onChange={(e)=>setDistance(e.target.value)}/>
 
-       
+                <input type="text"
+             placeholder="Weight of Velocity"
+                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-blue-200 text-black" 
+                
+                onChange={(e)=>setVelocity(e.target.value)}/>
+                <input type="text"
+             placeholder="Weight of Size"
+                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-blue-200 text-black" 
+                onChange={(e)=>setSize(e.target.value)}/>
+                <input type="text"
+             placeholder="Weight of Hazard Factor"
+                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-blue-200 text-black" 
+                onChange={(e)=>setHazardFactor(e.target.value)}/>
 
 
+            <button
+              className="w-full mt-4 px-4 py-2 bg-white text-black rounded" onClick={handleCalculation}>Analyze                               
+            </button>
+        </div>
+        
+
+
+      </div>
+
+    </div>
+    </div>
+    {/* Risk Score Table */}
+    <div>
+
+    </div>
     </div>
   )
 }
