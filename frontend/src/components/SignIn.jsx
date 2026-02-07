@@ -42,28 +42,28 @@ const SignIn = () => {
 
 
         
-    <form className="border-gray-200 border-2 p-6 rounded-lg shadow-lg w-full max-w-md">
-      <h2 className="text-2xl font-semibold mb-4 text-blue-50 text-center">Login</h2>
+    <form className="border-gray-200 border-2 bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
+      <h2 className="text-2xl font-semibold mb-4 text-center">Login</h2>
 
 
 
       <input
         type="Username"
         placeholder="Username"
-        className="w-full mb-3 px-4 py-2 border-gray-200 border-2 rounded text-amber-50"
+        className="w-full mb-3 px-4 py-2 border-gray-900 border-2 rounded "
         onChange={(e)=>setUsername(e.target.value)}
       />
 
       <input
         type="password"
         placeholder="Password"
-        className="w-full mb-4 px-4 py-2 border-gray-200 border-2 rounded text-amber-50"
+        className="w-full mb-4 px-4 py-2 border-gray-900 border-2 rounded "
         onChange={(e)=>setPassword(e.target.value)}
       />
 
       <button
         type="submit"
-        className="w-full bg-white text-black py-2 rounded-full hover:bg-gray-300 transition duration-300"
+        className="w-full bg-white text-black border py-2 rounded-full hover:bg-green-500 transition duration-300"
         onClick={handleSubmit}
 
       >

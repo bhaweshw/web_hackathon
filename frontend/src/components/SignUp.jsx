@@ -92,7 +92,7 @@ const [confirmPassword, setConfirmPassword] = useState("");
       <div className="flex items-center justify-between m-4">
         <button
         type="submit"
-        className="w-full bg-white text-black border  py-2 rounded-full hover:bg-gray-300 transition duration-300 font-medium text-lg"
+        className="w-full bg-white text-black border  py-2 rounded-full hover:bg-green-500 transition duration-300 font-medium text-lg"
         onClick={handleSubmit}
       >
         Submit
