@@ -11,7 +11,7 @@ const generateOTP = () => {
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, username, password } = req.body;
 
     const existing = await User.findOne({ email });
     if (existing)
@@ -22,6 +22,7 @@ exports.signup = async (req, res) => {
     await User.create({
       name,
       email,
+      username,
       password: hashed
     });
 
@@ -64,13 +65,13 @@ exports.verifyOTP = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     if (!user) return res.status(400).json({ msg: "User not found" });
 
     if (!user.isVerified)
-      return res.status(400).json({ msg: "Verify email first" });
+      return res.status(400).json({ msg: "Verify username first" });
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ msg: "Wrong password" });
