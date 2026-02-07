@@ -2,6 +2,7 @@ import React from 'react'
 import SignUp from './components/SignUp.jsx'
 import SignIn from './components/SignIn.jsx'
 import OtpPage from './components/OtpPage.jsx'
+import HomePage from './components/HomePage.jsx'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/otp" element={<OtpPage />} />
+        <Route path="/home" element={<HomePage />} />
       </Routes>
     </Router>
   )
