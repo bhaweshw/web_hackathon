@@ -13,12 +13,12 @@ const OtpPage = () => {
     <form className="border-gray-900 border-2 bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
       <h2 className="text-2xl font-semibold mb-4  text-center">Otp Verification</h2>
 
-      <input maxlength="1" className="w-12 h-12 text-center text-xl text-white mr-4 border border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white" />
-    <input maxlength="1" className="w-12 h-12 text-center text-xl text-white m-4 border border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white" />
-  <input maxlength="1" className="w-12 h-12 text-center text-xl text-white m-4 border border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white"  />
-  <input maxlength="1" className="w-12 h-12 text-center text-xl text-white m-4 border border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white"  />
-  <input maxlength="1" className="w-12 h-12 text-center text-xl text-white m-4 border border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white"  />
-  <input maxlength="1" className="w-12 h-12 text-center text-xl text-white ml-4 border border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white" />
+      <input maxlength="1" className="w-12 h-12 text-center text-xl  mr-4  border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white" />
+      <input maxlength="1" className="w-12 h-12 text-center text-xl  m-4  border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white" />
+      <input maxlength="1" className="w-12 h-12 text-center text-xl  m-4  border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white"  />
+      <input maxlength="1" className="w-12 h-12 text-center text-xl  m-4  border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white"  />
+      <input maxlength="1" className="w-12 h-12 text-center text-xl  m-4  border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white"  />
+      <input maxlength="1" className="w-12 h-12 text-center text-xl  ml-4 border-black border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white" />
 
       <button
         type="submit"
