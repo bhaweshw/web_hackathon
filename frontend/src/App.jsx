@@ -1,9 +1,10 @@
 import React from 'react'
+import SignUp from './components/SignUp.jsx'
 
 const App = () => {
   return (
-    <div className='bg-amber-300'>
-      <h1>home</h1>
+    <div >
+      <SignUp />
     </div>
   )
 }
