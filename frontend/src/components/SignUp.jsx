@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+
 
 
 
@@ -9,6 +11,7 @@ import { Navigate } from 'react-router-dom';
 
 const signUp = () => {
 
+const Navigate = useNavigate();
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
 const [username, setUsername] = useState("");
@@ -25,6 +28,8 @@ const [confirmPassword, setConfirmPassword] = useState("");
             confirmPassword: confirmPassword
           };
         console.log(formData);
+
+        Navigate("/otp");
     
         // axios.post("http://localhost:5000/api/register", formData)
         //   .then((res) => {
@@ -41,7 +46,7 @@ const [confirmPassword, setConfirmPassword] = useState("");
 
   return (
      <div className='relative min-h-screen w-full '>
-      <img src="https://images.pexels.com/photos/586072/pexels-photo-586072.jpeg" alt="logo" className='absolute top-0 left-0 right-0 bottom-0 w-full h-screen object-cover z-0' />
+      <img src="https://cdn.dribbble.com/userupload/44327402/file/9a61e899fbe551fc94152eb6a8fe2232.jpg?resize=1504x752&vertical=center" alt="logo" className='absolute top-0 left-0 right-0 bottom-0 w-full h-screen object-cover z-0' />
 
         <div className='absolute inset-0 bg-black/50 bg-opacity-10 z-10'></div>
        <div className="relative z-20 flex items-center justify-end p-30 min-h-screen">
@@ -49,7 +54,7 @@ const [confirmPassword, setConfirmPassword] = useState("");
 
     <div className='p-6'>
             
-    <form className="border-gray-200 border-2 bg-white p-10 rounded-xl shadow-lg w-full max-w-md">
+    <form className="border-gray-200 border-2 bg-amber-200 p-10 rounded-xl shadow-lg w-full max-w-md">
       <h2 className="text-2xl font-semibold mb-4 text-center">Sign Up</h2>
 
         <input
@@ -92,12 +97,21 @@ const [confirmPassword, setConfirmPassword] = useState("");
       <div className="flex items-center justify-between m-4">
         <button
         type="submit"
-        className="w-full bg-white text-black border  py-2 rounded-full hover:bg-green-500 transition duration-300 font-medium text-lg"
+        className="w-full bg-blue-200 text-black border  py-2 rounded-full hover:bg-orange-500 transition duration-300 font-medium text-lg mr-2"
         onClick={handleSubmit}
       >
-        Submit
+        Register
+      </button>
+
+       <button
+        type="submit"
+        className="w-full bg-orange-500 text-black border  py-2 rounded-full hover:bg-blue-500 transition duration-300 font-medium text-lg"
+        onClick={()=>Navigate("/signin")}
+      >
+        Login
       </button>
       </div>
+      
     </form>
         </div>
   </div>
