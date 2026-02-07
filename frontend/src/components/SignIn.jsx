@@ -35,35 +35,35 @@ const SignIn = () => {
 
   return (
     <div className='relative min-h-screen w-full'>
-      <img src="https://images.pexels.com/photos/76969/cold-front-warm-front-hurricane-felix-76969.jpeg" alt="logo" className='absolute top-0 left-0 right-0 bottom-0 w-full h-screen object-cover z-0' />
+      <img src="https://cdn.dribbble.com/userupload/44327402/file/9a61e899fbe551fc94152eb6a8fe2232.jpg?resize=1504x752&vertical=center" alt="logo" className='absolute top-0 left-0 right-0 bottom-0 w-full h-screen object-cover z-0' />
 
         <div className='absolute inset-0 bg-black/50 bg-opacity-10 z-10'></div>
        <div className="relative z-20 flex items-center justify-end p-30 min-h-screen">
 
 
         
-    <form className="border-gray-200 border-2 p-6 rounded-lg shadow-lg w-full max-w-md">
-      <h2 className="text-2xl font-semibold mb-4 text-blue-50 text-center">Login</h2>
+    <form className="border-gray-200 border-2 bg-amber-200 p-10 rounded-lg shadow-lg w-full max-w-md">
+      <h2 className="text-2xl font-semibold mb-4 text-center">Login</h2>
 
 
 
       <input
         type="Username"
         placeholder="Username"
-        className="w-full mb-3 px-4 py-2 border-gray-200 border-2 rounded text-amber-50"
+        className="w-full mb-3 px-4 py-2 border-gray-900 border-2 rounded bg-blue-200"
         onChange={(e)=>setUsername(e.target.value)}
       />
 
       <input
         type="password"
         placeholder="Password"
-        className="w-full mb-4 px-4 py-2 border-gray-200 border-2 rounded text-amber-50"
+        className="w-full mb-4 px-4 py-2 border-gray-900 border-2 rounded bg-blue-200"
         onChange={(e)=>setPassword(e.target.value)}
       />
 
       <button
         type="submit"
-        className="w-full bg-white text-black py-2 rounded-full hover:bg-gray-300 transition duration-300"
+        className="w-full bg-blue-200 text-black border py-2 rounded-full hover:bg-blue-500 transition duration-300"
         onClick={handleSubmit}
 
       >
