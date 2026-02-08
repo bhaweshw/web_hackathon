@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # MongoDB Service
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  # Node.js Backend Service
+  backend:
+    build: ./backend
+    container_name: cosmic-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://admin:kush1210@ac-wkwoqce-shard-00-00.6nslpnq.mongodb.net:27017,ac-wkwoqce-shard-00-01.6nslpnq.mongodb.net:27017,ac-wkwoqce-shard-00-02.6nslpnq.mongodb.net:27017/?replicaSet=atlas-70sw2t-shard-0&ssl=true&authSource=admin
+      - NASA_API_KEY=${sMz8FipYqnN1KNXDO35dUidpKZ5HZNSEjBiMzw0I}
+    depends_on:
+      - mongodb
+
+  # React Frontend Service
+  frontend:
+    build: ./frontend
+    container_name: cosmic-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
