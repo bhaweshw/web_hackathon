@@ -17,6 +17,8 @@ const HomePage = () => {
   const [asteroids, setAsteroids] = useState([]);
   const [bookmark, setBookmark] = useState([]);
   const [calculation, setCalculation] = useState([]);
+  const [riskScores, setRiskScores] = useState([]);
+  const [asteroidDetails, setAsteroidDetails] = useState([]);
 
   const scrollRef = useRef(null);
 
@@ -82,11 +84,13 @@ const handleCalculation = () => {
       distance*asteroid.close_approach_data?.[0].miss_distance.kilometers +
       velocity*asteroid.close_approach_data?.[0].relative_velocity.kilometers_per_hour +
       size*asteroid.estimated_diameter.meters.estimated_diameter_max +
-      hazardFactor*(asteroid.is_potentially_hazardous_asteroid ? 1*50000000 : 0))/2000000000/(distance+velocity+size+hazardFactor)
-    );})
+      hazardFactor*(asteroid.is_potentially_hazardous_asteroid ? 1*50000000 : 0))/20000000/(distance+velocity+size+hazardFactor)
+    )
+    setAsteroidDetails(prev => [...prev, asteroid.name]);
+    ;})
   }
-  console.log(calculation);
-  console.log(bookmark);
+        
+      setRiskScores(calculation.map(score => score.toFixed(4)));
 };
 
 
@@ -232,9 +236,21 @@ const handleCalculation = () => {
     </div>
     </div>
     {/* Risk Score Table */}
-    <div>
+    <div className="h-screen w-full flex justify-between bg-black text-white overflow-hidden">
+       
 
+    {calculation.map((score, index) => {
+
+      return (
+        <div className="m-4 h-24 w-24 bg-black text-white font-bold  p-2 rounded">
+          <h1>Asteroid: {asteroidDetails[index]}</h1>
+          <h1>Risk Score: {riskScores[index]}</h1>
+        </div>
+      )
+    })}
     </div>
+
+    
     </div>
   )
 }
