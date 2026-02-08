@@ -33,17 +33,17 @@ const OtpPage = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/verify-otp",
+        "http://localhost:3000/api/auth/verify-otp",
         {
           email: email,
           otp: enteredOtp,
         }
       );
 
-      alert("Email verified successfully 🎉");
+      alert("Email verified successfully ");
       console.log(res.data);
 
-      navigate("/signin"); // go login after verify
+      navigate("/home"); 
 
     } catch (err) {
       console.log(err.response?.data);
