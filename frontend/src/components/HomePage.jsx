@@ -2,6 +2,7 @@
 import axios from "axios";
 import React, { useState, useRef } from "react";
 import { RiBookmarkLine } from "@remixicon/react";
+import { RiBookmarkFill } from "@remixicon/react";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
@@ -74,7 +75,7 @@ const handleBookmark = (asteroid) => {
     return [...prev, asteroid];
   });
 
-  alert("Asteroid bookmarked!");
+ 
   console.log(bookmark);
 };
 
@@ -100,6 +101,8 @@ const handleCalculation = () => {
 
       {/* Fetching data */}
     <div className="w-full h-screen">
+
+      <h1 className="text-white text-4xl font-bold text-center pt-10 z-20 relative">Search Near Earth Objects</h1>
              <img src="https://cdn.dribbble.com/userupload/3719111/file/original-b212e235c1c8199378f2dfb575011f56.jpg?resize=1504x1504&vertical=center" alt="logo" className='absolute top-0 left-0 right-0 bottom-0 w-full h-screen object-cover z-0' />
       
       <div className='absolute inset-0 bg-black/50 bg-opacity-10 z-10 h-screen w-full'></div>
@@ -145,10 +148,16 @@ const handleCalculation = () => {
                 key={asteroid.id}
                 className="relative border bg-white/10 backdrop-blur-sm shrink-0 p-4 rounded w-64 h-64 flex flex-col justify-between"
               >
-                  <button className="h-10 w-10 absolute z-10 top-5 right-5" onClick={() => handleBookmark(asteroid)} >
-  <RiBookmarkLine />
+                 <button
+  className="h-10 w-10 absolute z-10 top-5 right-5"
+  onClick={() => handleBookmark(asteroid)}
+>
+  {bookmark.some((a) => a.id === asteroid.id) ? (
+    <RiBookmarkFill className="text-yellow-400" />
+  ) : (
+    <RiBookmarkLine />
+  )}
 </button>
-
                 <h1 className="font-bold">{asteroid.name}</h1>
 
                 <h1>
@@ -236,21 +245,30 @@ const handleCalculation = () => {
     </div>
     </div>
     {/* Risk Score Table */}
-    <div className="h-screen w-full flex justify-between bg-black text-white overflow-hidden">
-       
 
-    {calculation.map((score, index) => {
+    <div className="relative h-screen w-full flex justify-center bg-black text-white overflow-hidden">
+       <img src="https://cdn.dribbble.com/userupload/20786890/file/original-c2046c040c2d6bb443f0137f5d169c5b.gif" alt="logo" className='absolute top-0 left-0 right-0 bottom-0 w-full h-screen object-cover z-0' />
+      
+      <div className='absolute inset-0 bg-black/50 bg-opacity-10 z-10 h-screen w-full'></div>
+<div className="p-10 z-20 relative min-h-full flex-col items-center gap-10">
+       <h1 className="text-white w-full font-bold text-4xl h-40 text-center underline">Risk Score Table</h1>
+
+    <div className="flex mt-30">
+      {calculation.map((score, index) => {
 
       return (
-        <div className="m-4 h-24 w-24 bg-black text-white font-bold  p-2 rounded">
+        <div className="m-4 h-40 w-40 bg-black text-white font-bold  p-2 rounded">
           <h1>Asteroid: {asteroidDetails[index]}</h1>
           <h1>Risk Score: {riskScores[index]}</h1>
         </div>
       )
     })}
     </div>
+    </div>
+    </div>
+    {/* Alert Dashboard */}
 
-    
+
     </div>
   )
 }
