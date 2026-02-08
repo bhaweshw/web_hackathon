@@ -17,12 +17,12 @@ const SignUp = () => {
    
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/signup",
+        "http://localhost:3000/api/auth/signup",
         {
-          name,
-          email,
-          username,
-          password,
+          name: name,
+          email: email,
+          username: username,
+          password: password,
         }
       );
 
