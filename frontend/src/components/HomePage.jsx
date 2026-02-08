@@ -3,16 +3,15 @@ import axios from "axios";
 import React, { useState, useRef } from "react";
 import { RiBookmarkLine } from "@remixicon/react";
 import { RiBookmarkFill } from "@remixicon/react";
-import { useNavigate } from "react-router-dom";
+
 
 const HomePage = () => {
 
 
-  const Navigate = useNavigate();
-    const [distance, setDistance] = useState(40);
-    const [velocity, setVelocity] = useState(28);
-    const [size, setSize] = useState(12);
-    const [hazardFactor, setHazardFactor] = useState(20);
+  const [distance, setDistance] = useState(40);
+  const [velocity, setVelocity] = useState(28);
+  const [size, setSize] = useState(12);
+  const [hazardFactor, setHazardFactor] = useState(20);
   const [Startdate, setStartdate] = useState("");
   const [Enddate, setEnddate] = useState("");
   const [asteroids, setAsteroids] = useState([]);
@@ -20,6 +19,7 @@ const HomePage = () => {
   const [calculation, setCalculation] = useState([]);
   const [riskScores, setRiskScores] = useState([]);
   const [asteroidDetails, setAsteroidDetails] = useState([]);
+  const [alertThreshold, setAlertThreshold] = useState(0.5);
 
   const scrollRef = useRef(null);
 
@@ -71,30 +71,49 @@ const handleBookmark = (asteroid) => {
   setBookmark((prev) => {
     const exists = prev.find((a) => a.id === asteroid.id);
     if (exists) return prev;
-
     return [...prev, asteroid];
   });
-
- 
-  console.log(bookmark);
 };
 
+console.log(bookmark); 
 const handleCalculation = () => {
-  {bookmark.map((asteroid) => {
-    calculation.push((
-      distance*asteroid.close_approach_data?.[0].miss_distance.kilometers +
-      velocity*asteroid.close_approach_data?.[0].relative_velocity.kilometers_per_hour +
-      size*asteroid.estimated_diameter.meters.estimated_diameter_max +
-      hazardFactor*(asteroid.is_potentially_hazardous_asteroid ? 1*50000000 : 0))/20000000/(distance+velocity+size+hazardFactor)
-    )
-    setAsteroidDetails(prev => [...prev, asteroid.name]);
-    ;})
-  }
-        
-      setRiskScores(calculation.map(score => score.toFixed(4)));
+  const newCalculations = [];
+  const newDetails = [];
+
+  bookmark.forEach((asteroid) => {
+    const approach = asteroid.close_approach_data?.[0];
+    if (!approach) return;
+
+    const score =
+      (
+        distance * Number(approach.miss_distance.kilometers) +
+        velocity * Number(approach.relative_velocity.kilometers_per_hour) +
+        size * asteroid.estimated_diameter.meters.estimated_diameter_max +
+        hazardFactor * (asteroid.is_potentially_hazardous_asteroid ? 50000000 : 0)
+      ) /
+      20000000 /
+      (distance + velocity + size + hazardFactor);
+
+    newCalculations.push(score);
+    newDetails.push(asteroid.name);
+  });
+
+  setCalculation(newCalculations);
+  setAsteroidDetails(newDetails);
+  setRiskScores(newCalculations.map((s) => s.toFixed(4)));
 };
 
 
+
+const AlertHandler = () => {
+
+  const alertAsteroids = calculation.filter(score => score > alertThreshold);
+  if(alertAsteroids.length > 0){
+    alert(`Alert! ${alertAsteroids.length} asteroids have a risk score above the threshold!`);    
+  } else {
+    alert("No asteroids exceed the risk threshold.");
+  }
+}
 
   return (
     <div className=" w-full h-full bg-blue-600">
@@ -114,6 +133,7 @@ const handleCalculation = () => {
         <input
           type="date"
           value={Startdate}
+          
           onChange={(e) => setStartdate(e.target.value)}
           className="w-full p-2 bg-transparent border rounded"
         />
@@ -128,7 +148,7 @@ const handleCalculation = () => {
 
         <button
           onClick={handleSubmit}
-          className="w-full bg-white text-black py-2 rounded"
+          className="w-full bg-white text-black py-2 rounded font-bold hover:bg-blue-200 hover:text-white"
         >
           Search Asteroids
         </button>
@@ -215,26 +235,26 @@ const handleCalculation = () => {
         <div>
             <input type="text"
              placeholder="Weight of Distance"
-                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-blue-200 text-black" 
+                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-white text-black" 
                 onChange={(e)=>setDistance(e.target.value)}/>
 
                 <input type="text"
              placeholder="Weight of Velocity"
-                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-blue-200 text-black" 
+                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-white text-black" 
                 
                 onChange={(e)=>setVelocity(e.target.value)}/>
                 <input type="text"
              placeholder="Weight of Size"
-                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-blue-200 text-black" 
+                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-white text-black" 
                 onChange={(e)=>setSize(e.target.value)}/>
                 <input type="text"
              placeholder="Weight of Hazard Factor"
-                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-blue-200 text-black" 
+                className="w-full mt-4 px-4 py-2 border-gray-900 border-2 rounded bg-white text-black" 
                 onChange={(e)=>setHazardFactor(e.target.value)}/>
 
 
             <button
-              className="w-full mt-4 px-4 py-2 bg-white text-black rounded" onClick={handleCalculation}>Analyze                               
+              className="w-full mt-4 px-4 py-2 bg-white text-black rounded font-bold hover:bg-blue-200 hover:text-white" onClick={handleCalculation}>Analyze                               
             </button>
         </div>
         
@@ -257,7 +277,7 @@ const handleCalculation = () => {
       {calculation.map((score, index) => {
 
       return (
-        <div className="m-4 h-40 w-40 bg-black text-white font-bold  p-2 rounded">
+        <div className="m-4 h-40 w-40 bg-black text-white font-bold  p-2 rounded" key={index}>
           <h1>Asteroid: {asteroidDetails[index]}</h1>
           <h1>Risk Score: {riskScores[index]}</h1>
         </div>
@@ -267,11 +287,75 @@ const handleCalculation = () => {
     </div>
     </div>
     {/* Alert Dashboard */}
+  <div className="relative min-h-screen w-full bg-black text-white overflow-hidden">
+
+  {/* Background */}
+  <img
+    src="https://cdn.dribbble.com/userupload/26249465/file/original-9289f8a7832eed8e21bb8f37ee424126.png?resize=1504x1128&vertical=center"
+    alt="background"
+    className="absolute inset-0 w-full h-full object-cover z-0"
+  />
+
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/60 z-10"></div>
+
+  {/* Content */}
+  <div className="relative z-20 flex flex-col items-center px-6 py-20">
+
+    <h1 className="text-4xl font-bold mb-6 tracking-wide">
+       Alert Dashboard
+    </h1>
+
+    {/* Controls */}
+    <div className="flex items-center gap-4 mb-10">
+      <input
+        type="number"
+        step="0.01"
+        value={alertThreshold}
+        onChange={(e) => setAlertThreshold(Number(e.target.value))}
+        placeholder="Risk threshold"
+        className="w-64 px-4 py-2 border border-white rounded bg-black/70 text-white focus:outline-none"
+      />
+
+      <button
+        onClick={AlertHandler}
+        className="px-6 py-2 bg-white text-black font-bold rounded
+                   hover:bg-red-500 hover:text-white transition"
+      >
+        Show Alerts
+      </button>
+    </div>
+
+    {/* Alert Cards */}
+    {calculation.length === 0 ? (
+      <p className="text-gray-400">
+        No asteroids exceed the alert threshold.
+      </p>
+    ) : (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
+        {calculation.map((asteroid, index) => (
+          <div
+            key={index}
+            className="border border-red-500 bg-red-900/30 p-5 rounded-lg
+                       backdrop-blur-md shadow-lg hover:scale-105 transition"
+          >
+            <h2 className="text-lg font-bold mb-2">
+              Name: {asteroidDetails[index]}
+            </h2>
+            <p className="text-red-300 font-mono">
+              Risk Score: {riskScores[index]}
+            </p>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
 
 
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;
 
